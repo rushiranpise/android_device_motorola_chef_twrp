@@ -43,6 +43,24 @@ PRODUCT_PACKAGES += \
     libgptutils.sdm660 \
     libgptutils.sdm660.recovery
 
+# Enable retrofit dynamic partitions
+TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+
+PRODUCT_PACKAGES += \
+    check_dynamic_partitions
+
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_product=true \
+    POSTINSTALL_PATH_product=bin/check_dynamic_partitions \
+    FILESYSTEM_TYPE_product=ext4 \
+    POSTINSTALL_OPTIONAL_product=false
+
+# fastbootd
+PRODUCT_PACKAGES += \
+    fastbootd
+
 # Packages for decryption
 PRODUCT_PACKAGES += \
     qcom_decrypt \
@@ -52,8 +70,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.keystore=sdm660 \
     ro.hardware.gatekeeper=sdm660 \
-    ro.hardware.bootctrl=sdm660 \
-    ro.build.system_root_image=true
+    ro.hardware.bootctrl=sdm660
 	
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
